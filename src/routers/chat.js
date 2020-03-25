@@ -11,7 +11,8 @@ chatRouter.route('/chat/:chatId/participants')
     .post(ChatController.findChatById,
         ChatController.joinToChat);
 
-chatRouter.route('/chat/:chatId/message(/:messageId)')
-    .post();
+chatRouter.route('/chat/:chatId/message(/:messageId)?')
+    .post(ChatController.findChatById,
+        ChatController.addMessageToChat);
 
 module.exports = chatRouter;

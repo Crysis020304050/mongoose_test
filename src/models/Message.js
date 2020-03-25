@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const db = require('../db');
 
 const messageSchema = new Schema({
     authorId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-    chatId: {
+    /*chatId: {
         type: Schema.Types.ObjectId,
         ref: 'Chat',
-    },
+    },*/
     message: {
       type: Schema.Types.String,
     },
 });
 
-module.exports = messageSchema;
+const Message = db.model('Message', messageSchema);
+
+module.exports = {
+    messageSchema,
+    Message,
+};

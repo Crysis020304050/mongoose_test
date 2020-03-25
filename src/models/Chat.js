@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const db = require('../db');
-const messageSchema = require('./Message.js');
+const {messageSchema} = require('./Message.js');
 
 const chatSchema = new Schema({
         name: {

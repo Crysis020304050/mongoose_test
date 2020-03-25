@@ -1,4 +1,5 @@
 const Chat = require('./../models/Chat.js');
+const {Message} = require('./../models/Message.js');
 const Controller = require('../utils/controller');
 const{ BadRequestError, ResourceNotFoundError } = require('./../utils/errors');
 
@@ -18,7 +19,8 @@ class ChatController {
 
     findChatById = async (req, res, next) => {
         try {
-            req.chat = await this._controller.read( req.params.id);
+          req.chat = await this._controller.read( req.params.chatId);
+          next();
         } catch (e) {
             next( e );
         }
@@ -40,6 +42,20 @@ class ChatController {
             if (savedChat) {
                 const chatWithOwner = await Chat.findOne(chat).populate('owner').populate('participants');
                 return res.send(chatWithOwner);
+            }
+            new BadRequestError();
+        } catch (e) {
+            next(e);
+        }
+    };
+
+    addMessageToChat = async (req, res, next) => {
+        try {
+            const {headers: {authorization: userId}, chat, body} = req;
+            chat.messages.push(new Message({...body, authorId: userId}));
+            const savedChat = await chat.save();
+            if (savedChat) {
+                return res.send(savedChat);
             }
             new BadRequestError();
         } catch (e) {
