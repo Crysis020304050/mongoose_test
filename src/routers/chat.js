@@ -1,5 +1,6 @@
 const express = require('express');
 const ChatController = require('../controllers/chat.controller.js');
+const UserController = require('../controllers/user.controller.js');
 
 const chatRouter = express.Router();
 
@@ -9,6 +10,7 @@ chatRouter.route('/chat(/:chatId)?')
 
 chatRouter.route('/chat/:chatId/participants')
     .post(ChatController.findChatById,
+        UserController.fundUserById,
         ChatController.joinToChat);
 
 chatRouter.route('/chat/:chatId/message(/:messageId)?')

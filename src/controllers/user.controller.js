@@ -35,6 +35,16 @@ class UserController {
 		}
 	};
 
+	fundUserById = async (req, res, next) => {
+		try {
+			const {headers: {authorization: userId}} = req;
+			req.user = await this._controller.read(userId);
+			next();
+		} catch (e) {
+			next(e);
+		}
+	};
+
 	updateUserById = async (req, res, next) => {
 		try {
 			res.send(await this._controller.update( req.params.id, req.body, {

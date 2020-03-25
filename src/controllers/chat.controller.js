@@ -36,10 +36,12 @@ class ChatController {
 
     joinToChat = async (req, res, next) => {
         try {
-            const {headers: {authorization: userId}, chat} = req;
+            const {headers: {authorization: userId}, chat, user} = req;
             chat.participants.push(userId);
+            user.chats.push(chat._id);
             const savedChat = await chat.save();
-            if (savedChat) {
+            const savedUser = await user.save();
+            if (savedChat && savedUser) {
                 const chatWithOwner = await Chat.findOne(chat).populate('owner').populate('participants');
                 return res.send(chatWithOwner);
             }
