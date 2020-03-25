@@ -1,34 +1,41 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const yup = require('yup');
+const db = require('../db');
 
 const emailValidationSchema = yup.string().email().required();
 
 const userSchema = new Schema({
 	firstName: {
-		type: String,
+		type: Schema.Types.String,
 		required: true,
 	},
 	lastName: {
-		type: String,
+		type: Schema.Types.String,
 		required: true,
 
 	},
 	role: {
-		type: String,
+		type: Schema.Types.String,
 		enum: ['ADMIN', 'USER', 'MODERATOR'],
 		required: true,
 	},
 	email: {
-		type: String,
+		type: Schema.Types.String,
 		validate: {
 			validator: value => emailValidationSchema.validate(value),
 			message: 'Email validation failed',
 		},
 		unique: true,
 	},
+	chats: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Chat',
+		},
+	],
 });
 
-const User = mongoose.model('User', userSchema);
+const User = db.model('User', userSchema);
 
 module.exports = User;

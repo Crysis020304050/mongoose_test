@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost:27017/fd_mongoose',
 			useCreateIndex: true,
 		});
 
-module.exports = mongoose;
+module.exports = mongoose.connection;
 
 
 

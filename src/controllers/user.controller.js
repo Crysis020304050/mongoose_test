@@ -26,7 +26,8 @@ class UserController {
 		try {
 
 			res.send( await this._controller.read( req.params.id, {
-				'password': 0,
+				password: false,
+				__v: false,
 			} ) );
 
 		} catch (e) {
@@ -36,7 +37,9 @@ class UserController {
 
 	updateUserById = async (req, res, next) => {
 		try {
-			res.send(await this._controller.update( req.params.id, req.body, {new: true} ));
+			res.send(await this._controller.update( req.params.id, req.body, {
+				new: true,
+			} ));
 		} catch (e) {
 			next( e );
 		}
